@@ -5,7 +5,11 @@ const incomeSchema = new mongoose.Schema({
   source: String,
   date: Date,
   notes: String,
-  userId: String, // optional if using auth
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 });
 
 module.exports = mongoose.model("Income", incomeSchema);

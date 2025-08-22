@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
 const FutureExpense = require("../models/FutureExpense");
 
-// @desc Get all future expenses (optionally by user later)
+// @desc Get all future expenses for the logged-in user
 const getFutureExpenses = async (req, res) => {
   try {
-    const expenses = await FutureExpense.find();
+    // ✅ Only fetch expenses belonging to this user
+    const expenses = await FutureExpense.find({ userId: req.userId });
     res.json(expenses);
   } catch (err) {
     console.error("Error fetching expenses:", err);
@@ -16,21 +16,18 @@ const getFutureExpenses = async (req, res) => {
 const addFutureExpense = async (req, res) => {
   try {
     const { amount, category, date } = req.body;
-    console.log("Received Data:", req.body);
 
     // Validate fields
     if (!amount || !category || !date) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // ✅ TEMP: hardcode ObjectId for testing (replace with req.user.id if using auth)
-    const staticUserId = new mongoose.Types.ObjectId("64b2d3f34abcf2d5cc27c90a");
-
+    // ✅ Use req.user.id from middleware
     const newExpense = new FutureExpense({
       amount,
       category,
       date,
-      userId: staticUserId // Replace with req.user.id when JWT auth is added
+      userId: req.userId,
     });
 
     await newExpense.save();
@@ -41,7 +38,52 @@ const addFutureExpense = async (req, res) => {
   }
 };
 
+// @desc Update a future expense (only if it belongs to this user)
+const updateFutureExpense = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, category, date } = req.body;
+
+    const updatedExpense = await FutureExpense.findOneAndUpdate(
+      { _id: id, userId: req.userId }, // ✅ ensure ownership
+      { amount, category, date },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedExpense) {
+      return res.status(404).json({ message: "Expense not found or not authorized" });
+    }
+
+    res.json(updatedExpense);
+  } catch (err) {
+    console.error("Error updating expense:", err);
+    res.status(500).json({ message: "Error updating future expense", error: err.message });
+  }
+};
+
+// @desc Delete a future expense (only if it belongs to this user)
+const deleteFutureExpense = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedExpense = await FutureExpense.findOneAndDelete({
+      _id: id,
+      userId: req.userId, // ✅ ensure ownership
+    });
+
+    if (!deletedExpense) {
+      return res.status(404).json({ message: "Expense not found or not authorized" });
+    }
+
+    res.json({ message: "Expense deleted successfully", id });
+  } catch (err) {
+    console.error("Error deleting expense:", err);
+    res.status(500).json({ message: "Error deleting future expense", error: err.message });
+  }
+};
+
 module.exports = {
   getFutureExpenses,
-  addFutureExpense
+  addFutureExpense,
+  updateFutureExpense,
+  deleteFutureExpense,
 };

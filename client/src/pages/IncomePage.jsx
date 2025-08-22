@@ -42,45 +42,54 @@ const IncomePage = () => {
   const [endDate, setEndDate] = useState("");
 
   const fetchIncomes = async () => {
-    try {
-      const res = await axios.get("/api/incomes");
-      setIncomes(res.data.reverse());
-    } catch (error) {
-      console.error("Error fetching incomes:", error);
-    }
-  };
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("/api/incomes", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setIncomes(res.data.reverse());
+  } catch (error) {
+    console.error("Error fetching incomes:", error);
+  }
+};
 
   useEffect(() => {
     fetchIncomes();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editingIncomeId) {
-        await axios.put(`/api/incomes/${editingIncomeId}`,{
-          amount,
-          source,
-          date,
-          notes,
-        });
-        setMessage("✅ Income updated successfully!");
-      } else {
-        await axios.post("/api/incomes", { amount, source, date, notes });
-        setMessage("✅ Income added successfully!");
-      }
-      setAmount("");
-      setSource("");
-      setDate("");
-      setNotes("");
-      setEditingIncomeId(null);
-      setShowForm(false);
-      fetchIncomes();
-    } catch (error) {
-      console.error("Error saving income:", error);
-      setMessage("❌ Failed to save income.");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("token");
+
+    if (editingIncomeId) {
+      await axios.put(
+        `/api/incomes/${editingIncomeId}`,
+        { amount, source, date, notes },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setMessage("✅ Income updated successfully!");
+    } else {
+      await axios.post(
+        "/api/incomes",
+        { amount, source, date, notes },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setMessage("✅ Income added successfully!");
     }
-  };
+
+    setAmount("");
+    setSource("");
+    setDate("");
+    setNotes("");
+    setEditingIncomeId(null);
+    setShowForm(false);
+    fetchIncomes();
+  } catch (error) {
+    console.error("Error saving income:", error);
+    setMessage("❌ Failed to save income.");
+  }
+};
 
   const handleEdit = (income) => {
     setAmount(income.amount);
@@ -93,17 +102,20 @@ const IncomePage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this income?")) {
-      try {
-       await axios.delete(`/api/incomes/${id}`);
-        fetchIncomes();
-        setMessage("🗑 Income deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting income:", error);
-        setMessage("❌ Failed to delete income.");
-      }
+  if (window.confirm("Are you sure you want to delete this income?")) {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`/api/incomes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchIncomes();
+      setMessage("🗑 Income deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting income:", error);
+      setMessage("❌ Failed to delete income.");
     }
-  };
+  }
+};
 
   const handleAddButton = () => {
     setShowForm(!showForm);

@@ -41,7 +41,10 @@ const ExpensePage = () => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("/api/expenses");
+      const token = localStorage.getItem("token");
+      const res = await axios.get("/api/expenses",{
+      headers: { Authorization: `Bearer ${token}` },
+    });
       setExpenses(res.data.reverse());
     } catch (error) {
       console.error("Error fetching expenses:", error);
@@ -55,16 +58,18 @@ const ExpensePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
       if (editingExpenseId) {
        await axios.put(`/api/expenses/${editingExpenseId}`, {
           amount,
           category,
           date,
-          notes,
-        });
+          notes},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
         setMessage("✅ Expense updated successfully!");
       } else {
-        await axios.post("/api/expenses", { amount, category, date, notes });
+        await axios.post("/api/expenses",  {amount, category, date, notes} , { headers: { Authorization: `Bearer ${token}` } });
         setMessage("✅ Expense added successfully!");
       }
       setAmount("");
@@ -93,7 +98,9 @@ const ExpensePage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
       try {
-        await axios.delete(`/api/expenses/${id}`);
+        const token = localStorage.getItem("token");
+        await axios.delete(`/api/expenses/${id}`,{
+        headers: { Authorization: `Bearer ${token}` }});
         fetchExpenses();
         setMessage("🗑 Expense deleted successfully!");
       } catch (error) {

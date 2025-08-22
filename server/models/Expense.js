@@ -5,7 +5,11 @@ const expenseSchema = new mongoose.Schema({
   category: String,
   date: Date,
   notes: String,
-  userId: String, // For user-specific data if needed
+   userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 });
 
 module.exports = mongoose.model("Expense", expenseSchema);

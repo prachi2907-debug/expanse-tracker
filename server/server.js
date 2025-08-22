@@ -5,6 +5,8 @@ const authRoutes = require("./routes/authRoutes");
 const futureExpenseRoutes = require('./routes/futureExpenses');
 const incomeRoutes = require("./routes/incomeRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
 
 
 const cors = require('cors');
@@ -23,6 +25,7 @@ mongoose.connect(MONGO_URL).then(() => {
  app.use("/api/future-expenses", futureExpenseRoutes);
  app.use("/api/incomes", incomeRoutes);
  app.use("/api/expenses", expenseRoutes);
+ app.use("/api/dashboard", dashboardRoutes);
 
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

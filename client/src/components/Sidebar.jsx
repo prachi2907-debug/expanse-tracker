@@ -98,10 +98,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           💸 {isOpen && "Expense"}
         </li>
 
-        <li className="flex items-center gap-3 cursor-pointer hover:text-yellow-600">
-          📋 {isOpen && "Budget"}
-        </li>
-
         <li
           onClick={handleLogout}
           className="flex items-center gap-3 cursor-pointer hover:text-gray-800 mt-auto"
