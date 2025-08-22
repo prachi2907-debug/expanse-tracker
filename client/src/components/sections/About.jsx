@@ -17,7 +17,7 @@ const About = () => {
 
                 {/* Right: Text */}
                 <div className="w-full md:w-1/2 text-center md:text-left">
-                    <h2 className="text-3xl font-bold mb-6">About Expense Tracker</h2>
+                    <h2 className="text-3xl font-bold mb-6">About PocketPlan</h2>
                     <p className="text-lg mb-6">
                         Managing money as a student shouldn't be complicated. Expense Tracker helps
                         you keep things simple — track spending, plan budgets, and understand where

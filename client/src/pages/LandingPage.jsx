@@ -21,11 +21,11 @@ const LandingPage = () => {
             id="home"
             className="h-screen flex flex-col justify-center items-center px-6 bg-[#2b1e15] text-center pt-20"
           >
-            <h1 className="text-5xl font-bold mb-4">Expense Tracker</h1>
+           <img src="./images/pic.png" alt="error" className="w-15 h-15 rounded" />
+            <h1 className="text-5xl font-bold mb-4">PocketPlan</h1>
             <p className="text-lg max-w-xl">
               Simplify your college budgeting. Track expenses, set goals, and stay financially smart!
             </p>
-            {/* 🚫 Removed Login & Sign Up buttons from hero section */}
           </section>
 
           {/* Call to Action only on home */}
