@@ -42,7 +42,7 @@ const ExpensePage = () => {
   const fetchExpenses = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("/api/expenses",{
+      const res = await axios.get("https://pocketplan-hbsw.onrender.com/api/expenses",{
       headers: { Authorization: `Bearer ${token}` },
     });
       setExpenses(res.data.reverse());
@@ -60,7 +60,7 @@ const ExpensePage = () => {
     try {
       const token = localStorage.getItem("token");
       if (editingExpenseId) {
-       await axios.put(`/api/expenses/${editingExpenseId}`, {
+       await axios.put(`https://pocketplan-hbsw.onrender.com/api/expenses/${editingExpenseId}`, {
           amount,
           category,
           date,
@@ -69,7 +69,7 @@ const ExpensePage = () => {
       );
         setMessage("✅ Expense updated successfully!");
       } else {
-        await axios.post("/api/expenses",  {amount, category, date, notes} , { headers: { Authorization: `Bearer ${token}` } });
+        await axios.post("https://pocketplan-hbsw.onrender.com/api/expenses",  {amount, category, date, notes} , { headers: { Authorization: `Bearer ${token}` } });
         setMessage("✅ Expense added successfully!");
       }
       setAmount("");
@@ -99,7 +99,7 @@ const ExpensePage = () => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`/api/expenses/${id}`,{
+        await axios.delete(`https://pocketplan-hbsw.onrender.com/api/expenses/${id}`,{
         headers: { Authorization: `Bearer ${token}` }});
         fetchExpenses();
         setMessage("🗑 Expense deleted successfully!");

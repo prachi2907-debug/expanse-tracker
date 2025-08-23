@@ -16,7 +16,7 @@ const FutureExpenseBox = () => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("/api/future-expenses", {
+      const res = await axios.get("https://pocketplan-hbsw.onrender.com/api/future-expenses", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(res.data);
@@ -33,7 +33,7 @@ const FutureExpenseBox = () => {
     try {
       if (editId) {
         // Update expense
-        const res = await axios.put(`/api/future-expenses/${editId}`, formData, {
+        const res = await axios.put(`https://pocketplan-hbsw.onrender.com/api/future-expenses/${editId}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExpenses(
@@ -42,7 +42,7 @@ const FutureExpenseBox = () => {
         setEditId(null);
       } else {
         // Add new expense
-        const res = await axios.post("/api/future-expenses", formData, {
+        const res = await axios.post("https://pocketplan-hbsw.onrender.com/api/future-expenses", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExpenses([...expenses, res.data]);
@@ -58,7 +58,7 @@ const FutureExpenseBox = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/future-expenses/${id}`, {
+      await axios.delete(`https://pocketplan-hbsw.onrender.com/api/future-expenses/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(expenses.filter((exp) => exp._id !== id));

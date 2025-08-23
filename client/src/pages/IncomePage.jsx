@@ -44,7 +44,7 @@ const IncomePage = () => {
   const fetchIncomes = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get("/api/incomes", {
+    const res = await axios.get("https://pocketplan-hbsw.onrender.com/api/incomes", {
       headers: { Authorization: `Bearer ${token}` },
     });
     setIncomes(res.data.reverse());
@@ -64,14 +64,14 @@ const IncomePage = () => {
 
     if (editingIncomeId) {
       await axios.put(
-        `/api/incomes/${editingIncomeId}`,
+        `https://pocketplan-hbsw.onrender.com/api/incomes/${editingIncomeId}`,
         { amount, source, date, notes },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage("✅ Income updated successfully!");
     } else {
       await axios.post(
-        "/api/incomes",
+        "https://pocketplan-hbsw.onrender.com/api/incomes",
         { amount, source, date, notes },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -105,7 +105,7 @@ const IncomePage = () => {
   if (window.confirm("Are you sure you want to delete this income?")) {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`/api/incomes/${id}`, {
+      await axios.delete(`https://pocketplan-hbsw.onrender.com/api/incomes/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchIncomes();

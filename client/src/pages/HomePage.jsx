@@ -18,7 +18,7 @@ import {
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 // ✅ Create axios instance that includes token
-const API = axios.create({ baseURL: "/api" });
+const API = axios.create({ baseURL: "https://pocketplan-hbsw.onrender.com/api" });
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {

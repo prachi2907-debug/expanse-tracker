@@ -23,7 +23,7 @@ const RegisterPage = () => {
     console.log("✅ Form submitted!", form);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", form);
+      const res = await axios.post("https://pocketplan-hbsw.onrender.com/api/auth/register", form);
       console.log("✅ Server response:", res.data);
       localStorage.setItem("token", res.data.token);
       navigate("/login");

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // ✅ Create axios instance with token support
-const API = axios.create({ baseURL: "/api" });
+const API = axios.create({ baseURL: "https://pocketplan-hbsw.onrender.com/api" });
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
